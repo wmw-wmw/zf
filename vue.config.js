@@ -9,6 +9,7 @@ module.exports = {
         config.resolve.alias
             .set('api', resolve('src/api'))
             .set('assets', resolve('src/assets'))
+            .set('base', resolve('src/base'))
             .set('components', resolve('src/components'))
             .set('pages', resolve('src/pages'));
         // 格式.set('', resolve(''))
