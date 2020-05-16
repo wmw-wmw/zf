@@ -8,7 +8,13 @@
     <div class="login-form" v-if="index===1">
       <!-- 请输入手机号码 -->
       <div class="login-position">
-        <input class="login-tel" type="tel" placeholder="请输入手机号码" v-model="tel" />
+        <input
+          class="login-tel"
+          type="tel"
+          placeholder="请输入手机号码"
+          v-model="tel"
+          @input="changeInput()"
+        />
         <span class="clear-tel icon-fork" @click="clearTel()" v-show="tel"></span>
       </div>
       <!-- 请输入密码 -->
@@ -19,9 +25,12 @@
           type="password"
           placeholder="请输入密码"
           v-model="password"
+          @input="changeInput()"
         />
         <span class="display-password icon-ai-eye" @click="displayPassword"></span>
       </div>
+      <!-- 错误信息 -->
+      <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
       <!-- 登录 -->
       <button class="login-button" @click="loginButton()">登录</button>
       <div class="login-other">
@@ -49,7 +58,9 @@
         titleActive: '登录',
         tel: '',
         password: '',
-        index: 1
+        index: 1,
+        message: '',
+        showMessage: false
       };
     },
     methods: {
@@ -65,6 +76,7 @@
       // 清除手机号
       clearTel() {
         this.tel = '';
+        this.showMessage = false;
       },
 
       // 显示密码
@@ -79,7 +91,23 @@
       },
 
       // 登录
-      loginButton() {}
+      loginButton() {
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else if (this.password === '') {
+          this.message = '请输入密码';
+          this.showMessage = true;
+        } else {
+        }
+      },
+      changeInput() {
+        this.showMessage = false;
+      }
     }
   };
 </script>
@@ -186,7 +214,7 @@
       }
     }
   }
-
+  // 底部图片
   .login-banner {
     position: absolute;
     left: 0;
@@ -195,6 +223,15 @@
     height: 1.57rem;
     background: url("./img/login-banner.png") no-repeat center;
     background-size: cover;
+  }
+  // 错误信息
+  .message {
+    position: absolute;
+    z-index: 10;
+    left: 0.7rem;
+    top: 6.14rem;
+    font-family: "iconfont";
+    color: #ac63fb;
   }
 }
 </style>

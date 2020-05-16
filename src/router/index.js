@@ -8,17 +8,19 @@ const routes = [
     path: '*',
     redirect: '/login'
   },
-
+  // 密码登录
   {
     name: 'login',
     path: '/login',
     component: () => import('components/login/')
   },
+  // 验证码登录
   {
     name: 'phone',
     path: '/login/phone',
     component: () => import('components/login/loginPhone')
   },
+  // 忘记密码
   {
     name: 'forget',
     path: '/login/forget',
