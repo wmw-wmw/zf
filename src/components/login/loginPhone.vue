@@ -38,6 +38,8 @@
 <script>
   import Vue from 'vue';
   import { Checkbox } from 'vant';
+  import 'vant/lib/checkbox/style';
+
   Vue.use(Checkbox);
   export default {
     name: 'phone',

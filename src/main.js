@@ -6,7 +6,6 @@ import store from './store';
 
 import 'assets/js/rem.js';
 import 'assets/scss/index.scss';
-import 'vant/lib/index.css';
 
 Vue.config.productionTip = false;
 
