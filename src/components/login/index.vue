@@ -1,0 +1,211 @@
+<template>
+  <div class="container">
+    <div class="title">
+      <div :class="{'active': titleActive === '登录' }" @click="login()">登录</div>
+      <div :class="{'active': titleActive === '注册' }" @click="register()">注册</div>
+    </div>
+    <!-- 登录区 -->
+    <div class="login-form" v-if="index===1">
+      <!-- 请输入手机号码 -->
+      <div class="login-position">
+        <input class="login-tel" type="tel" placeholder="请输入手机号码" v-model="tel" />
+        <span class="clear-tel icon-fork" @click="clearTel()" v-show="tel"></span>
+      </div>
+      <!-- 请输入密码 -->
+      <div class="login-position">
+        <input
+          ref="displayPassword"
+          class="login-password"
+          type="password"
+          placeholder="请输入密码"
+          v-model="password"
+        />
+        <span class="display-password icon-ai-eye" @click="displayPassword"></span>
+      </div>
+      <!-- 登录 -->
+      <button class="login-button" @click="loginButton()">登录</button>
+      <div class="login-other">
+        <span @click="loginVerificationCode()">验证码登陆</span>
+        <span @click="loginForget()">忘记密码？</span>
+      </div>
+    </div>
+    <!-- 注册区 -->
+    <register v-if="index===2"></register>
+
+    <!-- 底部图片 -->
+    <div class="login-banner"></div>
+  </div>
+</template>
+
+<script>
+  import Register from './register';
+  export default {
+    name: 'Login',
+    components: {
+      Register
+    },
+    data() {
+      return {
+        titleActive: '登录',
+        tel: '',
+        password: '',
+        index: 1
+      };
+    },
+    methods: {
+      login() {
+        this.titleActive = '登录';
+        this.index = 1;
+      },
+      register() {
+        this.titleActive = '注册';
+        this.index = 2;
+      },
+
+      // 清除手机号
+      clearTel() {
+        this.tel = '';
+      },
+
+      // 显示密码
+      displayPassword(event) {
+        if (this.$refs.displayPassword.type === 'password') {
+          this.$refs.displayPassword.type = 'text';
+          event.target.style.color = '#AC63FB';
+        } else {
+          this.$refs.displayPassword.type = 'password';
+          event.target.style.color = '#4d4d4d';
+        }
+      },
+
+      // 登录
+      loginButton() {},
+
+      // 验证码登陆
+      loginVerificationCode() {
+
+      },
+
+      // 忘记密码？
+      loginForget() {}
+    }
+  };
+</script>
+
+<style lang="scss" scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 1.1rem 0.7rem 0 0.7rem;
+  .title {
+    margin-bottom: 1.6rem;
+    text-align: center;
+    div {
+      display: inline-block;
+      width: 2.2rem;
+      height: 0.75rem;
+      color: #9b9b9b;
+      font-size: 0.4rem;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .active {
+      color: #ac63fb;
+      border-bottom: 2px solid #ac63fb;
+    }
+  }
+
+  // 登录区
+  .login-form {
+    text-align: center;
+    input {
+      width: 6.06rem;
+      height: 0.8rem;
+      padding-left: 0.09rem;
+      padding-right: 0.35rem;
+      border-bottom: 2px solid #e6e6e6;
+      font-size: 0.3rem;
+      &::-webkit-input-placeholder {
+        color: #9b9b9b;
+      }
+    }
+    .login-tel {
+      margin-bottom: 0.8rem;
+    }
+    .login-position {
+      position: relative;
+    }
+
+    // 清除手机号
+    .clear-tel {
+      position: absolute;
+      top: 0.25rem;
+      right: 0;
+      width: 0.3rem;
+      height: 0.3rem;
+      padding-top: 0.02rem;
+      font-family: "iconfont";
+      background-color: #b2b2b2;
+      color: #fff;
+      font-size: 0.2rem;
+      border-radius: 0.17rem;
+    }
+
+    // 显示密码
+    .display-password {
+      position: absolute;
+      top: 0.2rem;
+      right: 0;
+      font-family: "iconfont";
+      color: #4d4d4d;
+      font-size: 0.4rem;
+    }
+
+    .login-password {
+      margin-bottom: 1rem;
+    }
+    .login-button {
+      display: block;
+      width: 6.06rem;
+      height: 0.95rem;
+      margin: 0 auto;
+      background-color: #ac63fb;
+      line-height: 0.95rem;
+      text-align: center;
+      color: #ffffff;
+      font-size: 0.4rem;
+      border-radius: 47px;
+    }
+    .login-button:active {
+      opacity: 0.9;
+    }
+    .login-other {
+      margin: 0 auto;
+      margin-top: 0.5rem;
+      width: 5.8rem;
+      overflow: hidden;
+      color: #ac63fb;
+      font-size: 0.26rem;
+      span:first-child {
+        float: left;
+      }
+      span:last-child {
+        float: right;
+        color: #808080;
+      }
+      span:active {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  .login-banner {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 7.5rem;
+    height: 1.57rem;
+    background: url("./img/login-banner.png") no-repeat center;
+    background-size: cover;
+  }
+}
+</style>
