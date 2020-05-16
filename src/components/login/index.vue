@@ -25,8 +25,8 @@
       <!-- 登录 -->
       <button class="login-button" @click="loginButton()">登录</button>
       <div class="login-other">
-        <span @click="loginVerificationCode()">验证码登陆</span>
-        <span @click="loginForget()">忘记密码？</span>
+        <router-link tag="span" to="/login/phone">验证码登陆</router-link>
+        <router-link tag="span" to="/login/forget">忘记密码？</router-link>
       </div>
     </div>
     <!-- 注册区 -->
@@ -79,15 +79,7 @@
       },
 
       // 登录
-      loginButton() {},
-
-      // 验证码登陆
-      loginVerificationCode() {
-
-      },
-
-      // 忘记密码？
-      loginForget() {}
+      loginButton() {}
     }
   };
 </script>
@@ -191,9 +183,6 @@
       span:last-child {
         float: right;
         color: #808080;
-      }
-      span:active {
-        opacity: 0.7;
       }
     }
   }

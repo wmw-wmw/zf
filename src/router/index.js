@@ -15,6 +15,16 @@ const routes = [
     component: () => import('components/login/')
   },
   {
+    name: 'phone',
+    path: '/login/phone',
+    component: () => import('components/login/loginPhone')
+  },
+  {
+    name: 'forget',
+    path: '/login/forget',
+    component: () => import('components/login/forget')
+  },
+  {
     name: 'home',
     path: '/home',
     component: () => import('components/home/')
