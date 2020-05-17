@@ -11,7 +11,9 @@
         <input
           class="login-tel"
           type="tel"
+          name="user"
           placeholder="请输入手机号码"
+          autocomplete="off"
           v-model="tel"
           @input="changeInput()"
         />
@@ -23,7 +25,9 @@
           ref="displayPassword"
           class="login-password"
           type="password"
+          name="password"
           placeholder="请输入密码"
+          autocomplete="off"
           v-model="password"
           @input="changeInput()"
         />
@@ -59,6 +63,7 @@
         tel: '',
         password: '',
         index: 1,
+        // 校验变量
         message: '',
         showMessage: false
       };
@@ -118,7 +123,7 @@
   height: 100%;
   padding: 1.1rem 0.7rem 0 0.7rem;
   .title {
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     div {
       display: inline-block;
@@ -188,6 +193,7 @@
       width: 6.06rem;
       height: 0.95rem;
       margin: 0 auto;
+      margin-top: 0.5rem;
       background-color: #ac63fb;
       line-height: 0.95rem;
       text-align: center;

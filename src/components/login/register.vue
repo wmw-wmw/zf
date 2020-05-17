@@ -2,16 +2,25 @@
   <div class="register-form">
     <!-- 请输入手机号码 -->
     <div class="register-position">
-      <input class="register-tel" type="tel" placeholder="请输入手机号码" v-model="tel" />
+      <input
+        class="register-tel"
+        type="tel"
+        name="phone"
+        placeholder="请输入手机号码"
+        v-model="tel"
+        @input="changeInput()"
+      />
       <span class="clear-tel icon-fork" @click="clearTel()" v-show="tel"></span>
     </div>
     <!-- 请输入验证码 -->
     <div class="register-position">
       <input
         class="register-tel verificationcode"
-        type="tel"
+        type="number"
+        name="verificationcode"
         placeholder="请输入验证码"
         v-model="verificationcode"
+        @input="changeInput()"
       />
       <button class="sand" :disabled="show" @click="sendVerificationCode">获取验证码</button>
     </div>
@@ -21,8 +30,10 @@
         ref="displayPassword1"
         class="register-tel"
         type="password"
+        name="password"
         placeholder="请输入密码"
         v-model="password"
+        @input="changeInput()"
       />
       <span class="display-password icon-ai-eye" @click="displayPassword1"></span>
     </div>
@@ -32,14 +43,18 @@
         ref="displayPassword2"
         class="register-last"
         type="password"
+        name="confirmpassword"
         placeholder="请确认密码"
         v-model="confirmpassword"
+        @input="changeInput()"
       />
       <span class="display-password icon-ai-eye" @click="displayPassword2"></span>
     </div>
-    <div class="information">
+    <div class="information" @click="service()">
       <van-checkbox v-model="checked" checked-color="#AC63FB">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
     </div>
+    <!-- 错误信息 -->
+    <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
     <!-- 注册 -->
     <button class="login-button" @click="registerButton()">注册</button>
   </div>
@@ -60,7 +75,10 @@
         password: '',
         confirmpassword: '',
         checked: false,
-
+        // 校验变量
+        message: '',
+        showMessage: false,
+        // 验证码变量
         show: false,
         count: '',
         timer: null
@@ -70,6 +88,7 @@
       // 清除手机号
       clearTel() {
         this.tel = '';
+        this.showMessage = false;
       },
       // 发送验证码
       sendVerificationCode(event) {
@@ -112,13 +131,43 @@
           event.target.style.color = '#4d4d4d';
         }
       },
+      // 同意服务
+      service() {
+        this.showMessage = false;
+      },
       // 注册
-      registerButton() {}
+      registerButton() {
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else if (this.verificationcode === '') {
+          this.message = '请输入验证码';
+          this.showMessage = true;
+        } else if (this.password === '') {
+          this.message = '请输入密码';
+          this.showMessage = true;
+        } else if (this.password !== this.confirmpassword) {
+          this.message = '两次输入密码不一致';
+          this.showMessage = true;
+        } else if (this.checked === false) {
+          this.message = '请勾选用户协议';
+          this.showMessage = true;
+        } else {
+        }
+      },
+      changeInput() {
+        this.showMessage = false;
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
+// 注册区
 .register-form {
   text-align: center;
   input {
@@ -188,7 +237,7 @@
     margin-bottom: 0.35rem;
   }
   .information {
-    margin-bottom: 0.36rem;
+    margin-bottom: 1rem;
     font-size: 0.25rem;
   }
   .login-button {
@@ -205,6 +254,15 @@
   }
   .login-button:active {
     opacity: 0.9;
+  }
+  // 错误信息
+  .message {
+    position: absolute;
+    z-index: 10;
+    left: 0.72rem;
+    top: 10rem;
+    font-family: "iconfont";
+    color: #ac63fb;
   }
 }
 </style>

@@ -59,7 +59,7 @@
         verificationcode: '',
         password: '',
         confirmpassword: '',
-
+        // 验证码变量
         show: false,
         count: '',
         timer: null
