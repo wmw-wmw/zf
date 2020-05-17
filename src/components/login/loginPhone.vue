@@ -7,22 +7,34 @@
     <div class="phone-form">
       <!-- 请输入手机号码 -->
       <div class="phone-position">
-        <input class="phone-tel" type="tel" placeholder="请输入手机号码" v-model="tel" />
+        <input
+          class="phone-tel"
+          type="tel"
+          placeholder="请输入手机号码"
+          name="user"
+          v-model="tel"
+          autocomplete="off"
+          @input="changeInput()"
+        />
         <span class="clear-tel icon-fork" @click="clearTel()" v-show="tel"></span>
       </div>
       <!-- 请输入验证码 -->
       <div class="phone-position">
         <input
           class="phone-last verificationcode"
-          type="tel"
+          type="number"
+          name="verificationcode"
           placeholder="请输入验证码"
           v-model="verificationcode"
+          @input="changeInput()"
         />
         <button class="sand" :disabled="show" @click="sendVerificationCode">获取验证码</button>
       </div>
-      <div class="information">
+      <div class="information" @click="service()">
         <van-checkbox v-model="checked" checked-color="#AC63FB">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
       </div>
+      <!-- 错误信息 -->
+      <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
       <!-- 验证登录 -->
       <button class="phone-button" @click="phoneButton()">验证登录</button>
     </div>
@@ -48,6 +60,9 @@
         tel: '',
         verificationcode: '',
         checked: false,
+        // 校验变量
+        message: '',
+        showMessage: false,
         // 验证码变量
         show: false,
         count: '',
@@ -58,6 +73,7 @@
       // 清除手机号
       clearTel() {
         this.tel = '';
+        this.showMessage = false;
       },
       // 发送验证码
       sendVerificationCode(event) {
@@ -81,8 +97,31 @@
           }, 1000);
         }
       },
+      // 同意服务
+      service() {
+        this.showMessage = false;
+      },
       // 验证登录
-      phoneButton() {}
+      phoneButton() {
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else if (this.verificationcode === '') {
+          this.message = '请输入验证码';
+          this.showMessage = true;
+        } else if (this.checked === false) {
+          this.message = '请勾选用户协议';
+          this.showMessage = true;
+        } else {
+        }
+      },
+      changeInput() {
+        this.showMessage = false;
+      }
     }
   };
 </script>
@@ -176,7 +215,7 @@
       width: 6.06rem;
       height: 0.95rem;
       margin: 0 auto;
-      margin-top: 0.4rem;
+      margin-top: 1.5rem;
       margin-bottom: 0.5rem;
       background-color: #ac63fb;
       line-height: 0.95rem;
@@ -203,6 +242,15 @@
     height: 1.57rem;
     background: url("./img/login-banner.png") no-repeat center;
     background-size: cover;
+  }
+  // 错误信息
+  .message {
+    position: absolute;
+    z-index: 10;
+    left: 0.72rem;
+    top: 7.02rem;
+    font-family: "iconfont";
+    color: #ac63fb;
   }
 }
 </style>

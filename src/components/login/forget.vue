@@ -7,7 +7,15 @@
     <div class="forget-form">
       <!-- 请输入手机号码 -->
       <div class="forget-position">
-        <input class="forget-tel" type="tel" placeholder="请输入手机号码" v-model="tel" />
+        <input
+          class="forget-tel"
+          type="tel"
+          placeholder="请输入手机号码"
+          v-model="tel"
+          autocomplete="off"
+          name="user"
+          @input="changeInput()"
+        />
         <span class="clear-tel icon-fork" @click="clearTel()" v-show="tel"></span>
       </div>
       <!-- 请输入验证码 -->
@@ -15,8 +23,10 @@
         <input
           class="forget-tel verificationcode"
           type="tel"
+          name="verificationcode"
           placeholder="请输入验证码"
           v-model="verificationcode"
+          @input="changeInput()"
         />
         <button class="sand" :disabled="show" @click="sendVerificationCode">获取验证码</button>
       </div>
@@ -26,8 +36,10 @@
           ref="displayPassword1"
           class="forget-tel"
           type="password"
+          name="password"
           placeholder="请输入新密码"
           v-model="password"
+          @input="changeInput()"
         />
         <span class="display-password icon-ai-eye" @click="displayPassword1"></span>
       </div>
@@ -37,11 +49,15 @@
           ref="displayPassword2"
           class="forget-last"
           type="password"
+          name="confirmpassword"
           placeholder="请确认密码"
           v-model="confirmpassword"
+          @input="changeInput()"
         />
         <span class="display-password icon-ai-eye" @click="displayPassword2"></span>
       </div>
+      <!-- 错误信息 -->
+      <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
       <!-- 确认 -->
       <button class="forget-button" @click="forgetButton()">确认</button>
     </div>
@@ -59,6 +75,9 @@
         verificationcode: '',
         password: '',
         confirmpassword: '',
+        // 校验变量
+        message: '',
+        showMessage: false,
         // 验证码变量
         show: false,
         count: '',
@@ -69,6 +88,7 @@
       // 清除手机号
       clearTel() {
         this.tel = '';
+        this.showMessage = false;
       },
       // 发送验证码
       sendVerificationCode(event) {
@@ -112,7 +132,29 @@
         }
       },
       // 确认
-      forgetButton() {}
+      forgetButton() {
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else if (this.verificationcode === '') {
+          this.message = '请输入验证码';
+          this.showMessage = true;
+        } else if (this.password === '') {
+          this.message = '请输入密码';
+          this.showMessage = true;
+        } else if (this.password !== this.confirmpassword) {
+          this.message = '两次输入密码不一致';
+          this.showMessage = true;
+        } else {
+        }
+      },
+      changeInput() {
+        this.showMessage = false;
+      }
     }
   };
 </script>
@@ -130,7 +172,7 @@
     font-size: 0.45rem;
   }
   .title {
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     div {
       display: inline-block;
@@ -214,6 +256,7 @@
       width: 6.06rem;
       height: 0.95rem;
       margin: 0 auto;
+      margin-top: 0.5rem;
       background-color: #ac63fb;
       line-height: 0.95rem;
       text-align: center;
@@ -233,6 +276,15 @@
     height: 1.57rem;
     background: url("./img/login-banner.png") no-repeat center;
     background-size: cover;
+  }
+  // 错误信息
+  .message {
+    position: absolute;
+    z-index: 10;
+    left: 0.72rem;
+    top: 9.5rem;
+    font-family: "iconfont";
+    color: #ac63fb;
   }
 }
 </style>
