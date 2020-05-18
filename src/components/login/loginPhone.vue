@@ -48,6 +48,8 @@
 </template>
 
 <script>
+  import { SUCC_CODE } from 'api/config.js';
+
   export default {
     name: 'phone',
     data() {
@@ -71,30 +73,42 @@
         this.showMessage = false;
       },
       // 发送验证码
-      sendVerificationCode(event) {
-        // 验证码60秒倒计时
-        const TIME_COUNT = 60;
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.show = true;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-              event.target.innerText = `重新发送(${this.count})`;
-              event.target.style.color = '#999';
-            } else {
-              this.show = false;
-              clearInterval(this.timer);
-              this.timer = null;
-              event.target.innerText = '重新发送';
-              event.target.style.color = '#ac63fb';
-            }
-          }, 1000);
+      async sendVerificationCode(event) {
+        // 校验手机号
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else {
+          // 验证码60秒倒计时
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = true;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+                event.target.innerText = `重新发送(${this.count})`;
+                event.target.style.color = '#999';
+              } else {
+                this.show = false;
+                clearInterval(this.timer);
+                this.timer = null;
+                event.target.innerText = '重新发送';
+                event.target.style.color = '#ac63fb';
+              }
+            }, 1000);
+          }
+          // 发送验证码
+          const res = await this.$http.get('YanzhengCode/downCode', {
+            params: { mobileCode: this.tel }
+          });
+          if (res.code !== SUCC_CODE) return this.$toast.fail('验证码发送失败');
+          this.$toast.success('验证码发送成功');
         }
-      },
-      // 同意服务
-      service() {
-        this.showMessage = false;
       },
       // 验证登录
       phoneButton() {
@@ -113,7 +127,28 @@
           this.message = '请勾选用户协议';
           this.showMessage = true;
         } else {
+          // 验证码登录交互
+          this.phoneButtonPost();
         }
+      },
+      // 验证码登录交互
+      async phoneButtonPost() {
+        const res = await this.$http.post('api/login', {
+          mobile: this.tel,
+          verifyCode: this.verificationcode
+        });
+        if (res.code !== SUCC_CODE) {
+          return this.$toast.fail('手机号或验证码不正确');
+        }
+        this.$toast.success('登录成功');
+        // 1. 将登录成功之后的 token，保存到客户端的 localStorage 中
+        localStorage.setItem('token', res.token);
+        // 2. 通过编程式导航跳转到主页，路由地址是 /home
+        this.$router.push('/home');
+      },
+      // 同意服务
+      service() {
+        this.showMessage = false;
       },
       changeInput() {
         this.showMessage = false;
