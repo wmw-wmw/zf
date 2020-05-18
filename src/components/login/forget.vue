@@ -67,6 +67,8 @@
 </template>
 
 <script>
+  import { SUCC_CODE } from 'api/config.js';
+
   export default {
     name: 'Forget',
     data() {
@@ -90,28 +92,6 @@
         this.tel = '';
         this.showMessage = false;
       },
-      // 发送验证码
-      sendVerificationCode(event) {
-        // 验证码60秒倒计时
-        const TIME_COUNT = 60;
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.show = true;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-              event.target.innerText = `重新发送(${this.count})`;
-              event.target.style.color = '#999';
-            } else {
-              this.show = false;
-              clearInterval(this.timer);
-              this.timer = null;
-              event.target.innerText = '重新发送';
-              event.target.style.color = '#ac63fb';
-            }
-          }, 1000);
-        }
-      },
       // 显示密码
       displayPassword1(event) {
         if (this.$refs.displayPassword1.type === 'password') {
@@ -131,7 +111,45 @@
           event.target.style.color = '#4d4d4d';
         }
       },
-      // 确认
+      // 发送验证码
+      async sendVerificationCode(event) {
+        // 校验手机号
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else {
+          // 验证码60秒倒计时
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = true;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+                event.target.innerText = `重新发送(${this.count})`;
+                event.target.style.color = '#999';
+              } else {
+                this.show = false;
+                clearInterval(this.timer);
+                this.timer = null;
+                event.target.innerText = '重新发送';
+                event.target.style.color = '#ac63fb';
+              }
+            }, 1000);
+          }
+          // 发送验证码
+          const res = await this.$http.get('YanzhengCode/downCode', {
+            params: { mobileCode: this.tel }
+          });
+          if (res.code !== SUCC_CODE) return this.$toast.fail('验证码发送失败');
+          this.$toast.success('验证码发送成功');
+        }
+      },
+      // 修改密码
       forgetButton() {
         // 校验
         const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
@@ -151,7 +169,22 @@
           this.message = '两次输入密码不一致';
           this.showMessage = true;
         } else {
+          // 修改密码交互
+          this.forgetButtonPost();
         }
+      },
+      // 修改密码交互
+      async forgetButtonPost() {
+        const res = await this.$http.post('api/register/forgetPwd', {
+          mobile: this.tel,
+          password: this.password,
+          passwordTwo: this.confirmpassword,
+          verifyCode: this.verificationcode
+        });
+        if (res.code !== SUCC_CODE) return this.$toast.fail('修改失败');
+        this.$toast.success('修改成功');
+        // 1. 通过编程式导航跳转到登录页，路由地址 /login
+        this.$router.push('/login');
       },
       changeInput() {
         this.showMessage = false;
