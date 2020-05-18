@@ -51,7 +51,7 @@
       <span class="display-password icon-ai-eye" @click="displayPassword2"></span>
     </div>
     <div class="information" @click="service()">
-      <van-checkbox v-model="checked" checked-color="#AC63FB">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
+      <van-checkbox v-model="checked" checked-color="#ac63fb">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
     </div>
     <!-- 错误信息 -->
     <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
@@ -61,11 +61,6 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import { Checkbox } from 'vant';
-  import 'vant/lib/checkbox/style';
-  Vue.use(Checkbox);
-
   export default {
     name: 'Register',
     data() {
@@ -92,31 +87,41 @@
       },
       // 发送验证码
       sendVerificationCode(event) {
-        // 验证码60秒倒计时
-        const TIME_COUNT = 60;
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.show = true;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-              event.target.innerText = `重新发送(${this.count})`;
-              event.target.style.color = '#999';
-            } else {
-              this.show = false;
-              clearInterval(this.timer);
-              this.timer = null;
-              event.target.innerText = '重新发送';
-              event.target.style.color = '#AC63FB';
-            }
-          }, 1000);
+        // 校验手机号
+        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.tel === '') {
+          this.message = '请输入手机号';
+          this.showMessage = true;
+        } else if (!reg.test(this.tel)) {
+          this.message = '手机号格式不正确';
+          this.showMessage = true;
+        } else {
+          // 验证码60秒倒计时
+          const TIME_COUNT = 60;
+          if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = true;
+            this.timer = setInterval(() => {
+              if (this.count > 0 && this.count <= TIME_COUNT) {
+                this.count--;
+                event.target.innerText = `重新发送(${this.count})`;
+                event.target.style.color = '#999';
+              } else {
+                this.show = false;
+                clearInterval(this.timer);
+                this.timer = null;
+                event.target.innerText = '重新发送';
+                event.target.style.color = '#ac63fb';
+              }
+            }, 1000);
+          }
         }
       },
       // 显示密码
       displayPassword1(event) {
         if (this.$refs.displayPassword1.type === 'password') {
           this.$refs.displayPassword1.type = 'text';
-          event.target.style.color = '#AC63FB';
+          event.target.style.color = '#ac63fb';
         } else {
           this.$refs.displayPassword1.type = 'password';
           event.target.style.color = '#4d4d4d';
@@ -125,7 +130,7 @@
       displayPassword2(event) {
         if (this.$refs.displayPassword2.type === 'password') {
           this.$refs.displayPassword2.type = 'text';
-          event.target.style.color = '#AC63FB';
+          event.target.style.color = '#ac63fb';
         } else {
           this.$refs.displayPassword2.type = 'password';
           event.target.style.color = '#4d4d4d';
@@ -137,14 +142,8 @@
       },
       // 注册
       registerButton() {
-        const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.tel === '') {
-          this.message = '请输入手机号';
-          this.showMessage = true;
-        } else if (!reg.test(this.tel)) {
-          this.message = '手机号格式不正确';
-          this.showMessage = true;
-        } else if (this.verificationcode === '') {
+        // 校验
+        if (this.verificationcode === '') {
           this.message = '请输入验证码';
           this.showMessage = true;
         } else if (this.password === '') {
@@ -167,6 +166,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/variables";
+
 // 注册区
 .register-form {
   text-align: center;
@@ -175,10 +176,10 @@
     height: 0.8rem;
     padding-left: 0.09rem;
     padding-right: 0.35rem;
-    border-bottom: 2px solid #e6e6e6;
+    border-bottom: 2px solid $colorD;
     font-size: 0.3rem;
     &::-webkit-input-placeholder {
-      color: #9b9b9b;
+      color: $colorB;
     }
   }
   .register-tel {
@@ -191,7 +192,7 @@
     position: absolute;
     top: 0.25rem;
     right: 0;
-    color: #ac63fb;
+    color: $colorA;
     font-size: 0.3rem;
     background-color: #fff;
     &::before {
@@ -245,13 +246,14 @@
     width: 6.06rem;
     height: 0.95rem;
     margin: 0 auto;
-    background-color: #ac63fb;
+    background-color: $colorA;
     line-height: 0.95rem;
     text-align: center;
-    color: #ffffff;
+    color: $colorC;
     font-size: 0.4rem;
     border-radius: 47px;
   }
+  // 点击闪动效果
   .login-button:active {
     opacity: 0.9;
   }
@@ -262,7 +264,7 @@
     left: 0.72rem;
     top: 10rem;
     font-family: "iconfont";
-    color: #ac63fb;
+    color: $colorA;
   }
 }
 </style>

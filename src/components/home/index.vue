@@ -8,7 +8,7 @@
       <div class="header-middle">
         <span>租房APP</span>
       </div>
-      <a href="javascript:;" class="header-right"></a>
+      <a @click="getuser(这里获取用户信息)" href="javascript:;" class="header-right"></a>
     </div>
     <div class="home-banner">
       <div class="title">选择意向信息</div>

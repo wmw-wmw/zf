@@ -52,6 +52,8 @@
 
 <script>
   import Register from './register';
+  import { SUCC_CODE } from 'api/config.js';
+
   export default {
     name: 'Login',
     components: {
@@ -88,7 +90,7 @@
       displayPassword(event) {
         if (this.$refs.displayPassword.type === 'password') {
           this.$refs.displayPassword.type = 'text';
-          event.target.style.color = '#AC63FB';
+          event.target.style.color = '#ac63fb';
         } else {
           this.$refs.displayPassword.type = 'password';
           event.target.style.color = '#4d4d4d';
@@ -97,6 +99,7 @@
 
       // 登录
       loginButton() {
+        // 校验
         const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
         if (this.tel === '') {
           this.message = '请输入手机号';
@@ -108,7 +111,22 @@
           this.message = '请输入密码';
           this.showMessage = true;
         } else {
+          // 登录交互
+          this.loginButtonPost();
         }
+      },
+      // 登录交互
+      async loginButtonPost() {
+        const res = await this.$http.post('/api/login', {
+          mobile: this.tel,
+          password: this.password
+        });
+        if (res.code !== SUCC_CODE) return this.$toast.fail('手机号或密码不正确');
+        this.$toast.success('登录成功');
+        // 1. 将登录成功之后的 token，保存到客户端的 localStorage 中
+        localStorage.setItem('token', res.token);
+        // 2. 通过编程式导航跳转到主页，路由地址是 /home
+        this.$router.push('/home');
       },
       changeInput() {
         this.showMessage = false;
@@ -118,6 +136,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/variables";
+
 .container {
   width: 100%;
   height: 100%;
@@ -129,13 +149,13 @@
       display: inline-block;
       width: 2.2rem;
       height: 0.75rem;
-      color: #9b9b9b;
+      color: $colorB;
       font-size: 0.4rem;
-      border-bottom: 1px solid #e6e6e6;
+      border-bottom: 1px solid $colorD;
     }
     .active {
-      color: #ac63fb;
-      border-bottom: 2px solid #ac63fb;
+      color: $colorA;
+      border-bottom: 2px solid $colorA;
     }
   }
 
@@ -147,10 +167,10 @@
       height: 0.8rem;
       padding-left: 0.09rem;
       padding-right: 0.35rem;
-      border-bottom: 2px solid #e6e6e6;
+      border-bottom: 2px solid $colorD;
       font-size: 0.3rem;
       &::-webkit-input-placeholder {
-        color: #9b9b9b;
+        color: $colorB;
       }
     }
     .login-tel {
@@ -194,22 +214,24 @@
       height: 0.95rem;
       margin: 0 auto;
       margin-top: 0.5rem;
-      background-color: #ac63fb;
+      background-color: $colorA;
       line-height: 0.95rem;
       text-align: center;
-      color: #ffffff;
+      color: $colorC;
       font-size: 0.4rem;
       border-radius: 47px;
+      // 点击闪动效果
+      &:active {
+        opacity: 0.9;
+      }
     }
-    .login-button:active {
-      opacity: 0.9;
-    }
+
     .login-other {
       margin: 0 auto;
       margin-top: 0.5rem;
       width: 5.8rem;
       overflow: hidden;
-      color: #ac63fb;
+      color: $colorA;
       font-size: 0.26rem;
       span:first-child {
         float: left;
@@ -237,7 +259,7 @@
     left: 0.7rem;
     top: 6.14rem;
     font-family: "iconfont";
-    color: #ac63fb;
+    color: $colorA;
   }
 }
 </style>

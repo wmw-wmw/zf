@@ -34,7 +34,7 @@ axios.defaults.transformRequest = data => qs.stringify(data);
 /*
  * 设置请求拦截器
  * 客户端发送请求 - > [请求拦截器] - > 服务器
- * TOKEN校验（JWT）：接收服务器返回的token，存储到vuex/本地存储中，每一次向服务器发请求，我们应该把token带上
+ * TOKEN校验（JWT）：接收服务器返回的token，存储到vuex/本地存储中，每一次向服务器发请求，应该把token带上
  */
 axios.interceptors.request.use(config => {
     // 携带上token
@@ -51,7 +51,9 @@ axios.interceptors.request.use(config => {
  */
 axios.interceptors.response.use(response => {
     // 只返回响应主体中的信息（可以进一步完善，例如指定服务器返回的CODE值来指定成功或失败）
-    return response.data;
+    if (response.status === 200) {
+        return response.data;
+    }
 }, error => {
     let {
         response

@@ -31,7 +31,7 @@
         <button class="sand" :disabled="show" @click="sendVerificationCode">获取验证码</button>
       </div>
       <div class="information" @click="service()">
-        <van-checkbox v-model="checked" checked-color="#AC63FB">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
+        <van-checkbox v-model="checked" checked-color="#ac63fb">请在同意前认真阅读下方协议：《用户服务协议》</van-checkbox>
       </div>
       <!-- 错误信息 -->
       <div class="message icon-gantanhao" v-if="showMessage">{{message}}</div>
@@ -48,11 +48,6 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import { Checkbox } from 'vant';
-  import 'vant/lib/checkbox/style';
-
-  Vue.use(Checkbox);
   export default {
     name: 'phone',
     data() {
@@ -92,7 +87,7 @@
               clearInterval(this.timer);
               this.timer = null;
               event.target.innerText = '重新发送';
-              event.target.style.color = '#AC63FB';
+              event.target.style.color = '#ac63fb';
             }
           }, 1000);
         }
@@ -103,6 +98,7 @@
       },
       // 验证登录
       phoneButton() {
+        // 校验
         const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
         if (this.tel === '') {
           this.message = '请输入手机号';
@@ -127,6 +123,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/variables";
+
 .container {
   width: 100%;
   height: 100%;
@@ -145,9 +143,9 @@
       display: inline-block;
       width: 4.3rem;
       height: 0.75rem;
-      color: #ac63fb;
+      color: $colorA;
       font-size: 0.4rem;
-      border-bottom: 2px solid #ac63fb;
+      border-bottom: 2px solid $colorA;
     }
   }
   .phone-form {
@@ -157,10 +155,10 @@
       height: 0.8rem;
       padding-left: 0.09rem;
       padding-right: 0.35rem;
-      border-bottom: 2px solid #e6e6e6;
+      border-bottom: 2px solid $colorD;
       font-size: 0.3rem;
       &::-webkit-input-placeholder {
-        color: #9b9b9b;
+        color: $colorB;
       }
     }
     .phone-tel {
@@ -173,7 +171,7 @@
       position: absolute;
       top: 0.25rem;
       right: 0;
-      color: #ac63fb;
+      color: $colorA;
       font-size: 0.3rem;
       background-color: #fff;
       &::before {
@@ -217,13 +215,14 @@
       margin: 0 auto;
       margin-top: 1.5rem;
       margin-bottom: 0.5rem;
-      background-color: #ac63fb;
+      background-color: $colorA;
       line-height: 0.95rem;
       text-align: center;
-      color: #ffffff;
+      color: $colorC;
       font-size: 0.4rem;
       border-radius: 47px;
     }
+    // 点击闪动效果
     .phone-button:active {
       opacity: 0.9;
     }
@@ -231,7 +230,7 @@
   .login-password {
     width: 100%;
     text-align: center;
-    color: #ac63fb;
+    color: $colorA;
     font-size: 0.26rem;
   }
   .phone-banner {
@@ -250,7 +249,7 @@
     left: 0.72rem;
     top: 7.02rem;
     font-family: "iconfont";
-    color: #ac63fb;
+    color: $colorA;
   }
 }
 </style>

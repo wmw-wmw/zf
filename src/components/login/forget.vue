@@ -107,7 +107,7 @@
               clearInterval(this.timer);
               this.timer = null;
               event.target.innerText = '重新发送';
-              event.target.style.color = '#AC63FB';
+              event.target.style.color = '#ac63fb';
             }
           }, 1000);
         }
@@ -116,7 +116,7 @@
       displayPassword1(event) {
         if (this.$refs.displayPassword1.type === 'password') {
           this.$refs.displayPassword1.type = 'text';
-          event.target.style.color = '#AC63FB';
+          event.target.style.color = '#ac63fb';
         } else {
           this.$refs.displayPassword1.type = 'password';
           event.target.style.color = '#4d4d4d';
@@ -125,7 +125,7 @@
       displayPassword2(event) {
         if (this.$refs.displayPassword2.type === 'password') {
           this.$refs.displayPassword2.type = 'text';
-          event.target.style.color = '#AC63FB';
+          event.target.style.color = '#ac63fb';
         } else {
           this.$refs.displayPassword2.type = 'password';
           event.target.style.color = '#4d4d4d';
@@ -133,6 +133,7 @@
       },
       // 确认
       forgetButton() {
+        // 校验
         const reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
         if (this.tel === '') {
           this.message = '请输入手机号';
@@ -160,6 +161,8 @@
 </script>
 
 <style lang="scss" scoped>
+@import "~assets/scss/variables";
+
 .container {
   width: 100%;
   height: 100%;
@@ -178,9 +181,9 @@
       display: inline-block;
       width: 4.3rem;
       height: 0.75rem;
-      color: #ac63fb;
+      color: $colorA;
       font-size: 0.4rem;
-      border-bottom: 2px solid #ac63fb;
+      border-bottom: 2px solid $colorA;
     }
   }
   .forget-form {
@@ -190,10 +193,10 @@
       height: 0.8rem;
       padding-left: 0.09rem;
       padding-right: 0.35rem;
-      border-bottom: 2px solid #e6e6e6;
+      border-bottom: 2px solid $colorD;
       font-size: 0.3rem;
       &::-webkit-input-placeholder {
-        color: #9b9b9b;
+        color: $colorB;
       }
     }
     .forget-tel {
@@ -206,7 +209,7 @@
       position: absolute;
       top: 0.25rem;
       right: 0;
-      color: #ac63fb;
+      color: $colorA;
       font-size: 0.3rem;
       background-color: #fff;
       &::before {
@@ -257,13 +260,14 @@
       height: 0.95rem;
       margin: 0 auto;
       margin-top: 0.5rem;
-      background-color: #ac63fb;
+      background-color: $colorA;
       line-height: 0.95rem;
       text-align: center;
-      color: #ffffff;
+      color: $colorC;
       font-size: 0.4rem;
       border-radius: 47px;
     }
+    // 点击闪动效果
     .forget-button:active {
       opacity: 0.9;
     }
@@ -284,7 +288,7 @@
     left: 0.72rem;
     top: 9.5rem;
     font-family: "iconfont";
-    color: #ac63fb;
+    color: $colorA;
   }
 }
 </style>
