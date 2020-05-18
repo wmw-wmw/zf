@@ -117,7 +117,7 @@
       },
       // 登录交互
       async loginButtonPost() {
-        const res = await this.$http.post('/api/login', {
+        const res = await this.$http.post('api/login', {
           mobile: this.tel,
           password: this.password
         });
