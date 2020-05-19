@@ -187,11 +187,8 @@
         });
         if (res.code !== SUCC_CODE) return this.$toast.fail('未知异常');
         this.$toast.success('注册成功');
-        // 1. 通过编程式导航跳转到登录页，延迟2秒跳转，路由地址 /login
-        const tim = window.setTimeout(() => {
-          this.$router.push('/login');
-        }, 2000);
-        window.clearTimeout(tim);
+        // 1. 通过编程式导航跳转到登录页，路由地址 /login
+        this.$router.push('/login');
       },
       // 同意服务
       service() {

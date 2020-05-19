@@ -40,12 +40,9 @@ axios.interceptors.request.use(config => {
     if ((config.url === 'api/register/register') || (config.url === 'api/register/forgetPwd')) {
         config.headers['Content-Type'] = 'application/json';
         // config.data = qs.parse(config.data);
-        console.log(config.data);
     } else {
         config.data = qs.stringify(config.data);
-        console.log(config.data);
     }
-    console.log(config);
 
     // 携带上token
     let token = localStorage.getItem('token');
