@@ -29,7 +29,7 @@ axios.defaults.withCredentials = true;
  * x-www-form-urlencoded
  */
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.transformRequest = data => qs.stringify(data);
+// axios.defaults.transformRequest = data => qs.stringify(data);
 
 /*
  * 设置请求拦截器
@@ -37,6 +37,16 @@ axios.defaults.transformRequest = data => qs.stringify(data);
  * TOKEN校验（JWT）：接收服务器返回的token，存储到vuex/本地存储中，每一次向服务器发请求，应该把token带上
  */
 axios.interceptors.request.use(config => {
+    if ((config.url === 'api/register/register') || (config.url === 'api/register/forgetPwd')) {
+        config.headers['Content-Type'] = 'application/json';
+        // config.data = qs.parse(config.data);
+        console.log(config.data);
+    } else {
+        config.data = qs.stringify(config.data);
+        console.log(config.data);
+    }
+    console.log(config);
+
     // 携带上token
     let token = localStorage.getItem('token');
     token && (config.headers.Authorization = token);
