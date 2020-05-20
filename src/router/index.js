@@ -6,7 +6,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '*',
-    redirect: '/login'
+    redirect: '/select'
   },
   // 密码登录
   {
@@ -27,14 +27,14 @@ const routes = [
     component: () => import('components/login/forget')
   },
   {
-    name: 'home',
-    path: '/home',
-    component: () => import('components/home/')
+    name: 'select',
+    path: '/select',
+    component: () => import('components/home/select')
   },
   {
-    name: 'my',
-    path: '/my',
-    component: () => import('components/home/')
+    name: 'home',
+    path: '/home',
+    component: () => import('components/home/home')
   }
 ];
 
