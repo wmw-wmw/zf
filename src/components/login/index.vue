@@ -125,8 +125,14 @@
         this.$toast.success('登录成功');
         // 1. 将登录成功之后的 token，保存到客户端的 localStorage 中
         localStorage.setItem('token', res.token);
-        // 2. 通过编程式导航跳转到主页，路由地址是 /home
-        this.$router.push('/home');
+        // 获取用户信息
+        const res1 = await this.$http.get('/api/userInfo', {
+          params: { token: res.token }
+        });
+        console.log(res1);
+        localStorage.setItem('userInf', JSON.stringify(res1.user));
+        // 2. 通过编程式导航跳转到主页，路由地址是 /select
+        this.$router.push('/select');
       },
       changeInput() {
         this.showMessage = false;

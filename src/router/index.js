@@ -35,6 +35,11 @@ const routes = [
     name: 'home',
     path: '/home',
     component: () => import('components/home/home')
+  },
+  {
+    name: 'user',
+    path: '/user',
+    component: () => import('components/my')
   }
 ];
 

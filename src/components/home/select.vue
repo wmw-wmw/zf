@@ -9,9 +9,7 @@
       <div class="header-middle">
         <span>租房APP</span>
       </div>
-      <router-link tag="div" to="/user">
-        <div class="header-right" @click="getuser(这里获取用户信息)"></div>
-      </router-link>
+      <div class="header-right" @click="getuser()"></div>
     </div>
     <div class="select-banner">
       <div class="title">选择意向信息</div>
@@ -34,7 +32,7 @@
         <span :class="{'black':price!='请选择价格区间'}">{{price}}</span>
         <i class="right icon-sanjiao"></i>
       </div>
-      <button class="select-button">提交</button>
+      <button class="select-button" @click="button()">提交</button>
       <!-- 弹出层 -->
       <van-popup v-model="showPicker" round position="bottom">
         <van-picker
@@ -55,77 +53,111 @@
     name: 'Choice',
     data() {
       return {
-        showPicker: false,
-        columns: [],
-        columns1: [],
+        showPicker: false, // 控制弹出隐藏
+
+        columns: [], // 配置每一列显示的数据
+        areaList: [], // 总数据
+        region: [], // 区域变量
+        subwayLine: [], // 地铁线
+        priceList: ['300-500', '500-800', '800-1000', '1000-1500', '1500以上'], // 价格范围
+
         area: '请选择意向区域',
         metro: '请选择地铁口',
         price: '请选择价格区间',
-        areaList: [],
         index: ''
-      // index: ''
-      // areaName: []
       };
     },
     mounted() {
       this.getArea();
     },
     methods: {
-      onConfirm(area) {
-        if (this.index === 1) {
-          this.area = area;
-        }
-        if (this.index === 2) {
-          this.metro = area[1];
-        }
-        this.showPicker = false;
-      },
       // 获取数据
       async getArea() {
         const res = await this.$http.get('api/areaMetro/list');
         if (res.code !== SUCC_CODE) return this.$toast.fail('请求失败');
         console.log(res);
         res.msg.forEach(item => {
-          this.columns.push(item.areaName);
+          // 页面加载拿到区域名称
+          this.region.push(item.areaName);
         });
+        // 保存总数据
         this.areaList = res.msg;
       },
-      // 选择
-      showPic(index) {
-        this.showPicker = true;
-
-        this.index = index;
-        if (index === 2) {
-          if (this.area === '请选择意向区域') {
-            return this.$toast.fail('请先选择区域');
-          }
-          const { listMetro: findMetro } = this.areaList.find(item => {
-            return item.areaName === this.area;
+      onConfirm(value) {
+        if (this.index === 1) {
+          this.area = value;
+          // 清空地铁线,不然每次循环都在末尾追加线路
+          this.subwayLine = [];
+          // index = 1的时候就循环准备好index =2的columns数据
+          const { listMetro } = this.areaList.find(item => {
+            // 从areaList[]中找到areaName与area相同的对象
+            return item.areaName === value;
           });
-          // console.log(findMetro);
-          findMetro.forEach(item => {
-            const metroLine = {};
-            metroLine.text = item.metroName;
-            const { stationName: station } = item;
+          // console.log(listMetro);
+
+          listMetro.forEach(item => {
+            const metroLineText = {};
+            metroLineText.text = item.metroName;
+            // console.log(metroLineText);
+
+            const { stationName } = item;
             const children = [];
-            station.forEach(item1 => {
-              const { subwayStation: subway } = item1;
-              const subway1 = {};
-              subway1.text = subway;
-              console.log(subway1);
+            stationName.forEach(item1 => {
+              const { subwayStation } = item1;
+              const subway = {};
+              subway.text = subwayStation;
               // console.log(subway);
-              children.push(subway1);
+              children.push(subway);
             });
             // console.log(children);
-            metroLine.children = children;
-            console.log(metroLine);
-            this.columns1.push(metroLine);
-            // console.log(station);
-            console.log(this.columns1);
-            this.columns = [];
-            this.columns = this.columns1;
+            metroLineText.children = children;
+            // console.log(metroLineText);
+            this.subwayLine.push(metroLineText);
+          // console.log(this.subwayLine);
           });
+        } else if (this.index === 2) {
+          this.metro = value[0] + '-' + value[1];
+        } else if (this.index === 3) {
+          this.price = value;
         }
+        this.showPicker = false;
+      },
+
+      // 选择
+      showPic(index) {
+        this.index = index;
+        if (index === 1) {
+          this.columns = this.region;
+        } else if (index === 2 && this.area === '请选择意向区域') {
+          return this.$toast.fail('请先选择区域');
+        } else if (index === 2) {
+          this.columns = this.subwayLine;
+        } else if (index === 3) {
+          this.columns = this.priceList;
+        }
+        this.showPicker = true;
+      },
+      // 跳转用户信息页
+      getuser() {
+        if (!localStorage.getItem('token')) {
+          this.$router.push('/login');
+          this.$toast.fail('请先登录');
+          return;
+        }
+        // const tok = localStorage.getItem('token');
+        this.$router.push('/user');
+      },
+      // 提交选项
+      button() {
+        if (this.area === '请选择意向区域' && this.metro === '请选择地铁口') {
+          return this.$toast.fail('您有未选项');
+        }
+        this.$router.push({
+          path: '/home',
+          query: {
+            area: this.area
+          }
+        });
       }
     }
   };
