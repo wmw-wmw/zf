@@ -19,34 +19,114 @@
     </div>
     <!-- 选择区 -->
     <div class="select-choice">
-      <div class="choice-option" @click="selectArea">
+      <div class="choice-option" @click="showPic(1)">
         <i class="left area"></i>
-        <span>请选择意向区域</span>
+        <span :class="{'black':area!='请选择意向区域'}">{{area}}</span>
         <i class="right icon-sanjiao"></i>
       </div>
-      <div class="choice-option">
+      <div class="choice-option" @click="showPic(2)">
         <i class="left metro"></i>
-        <span>请选择地铁口</span>
+        <span :class="{'black':metro!='请选择地铁口'}">{{metro}}</span>
         <i class="right icon-sanjiao"></i>
       </div>
-      <div class="choice-option">
+      <div class="choice-option" @click="showPic(3)">
         <i class="left price"></i>
-        <span>请选择价格区间</span>
+        <span :class="{'black':price!='请选择价格区间'}">{{price}}</span>
         <i class="right icon-sanjiao"></i>
       </div>
       <button class="select-button">提交</button>
+      <!-- 弹出层 -->
+      <van-popup v-model="showPicker" round position="bottom">
+        <van-picker
+          show-toolbar
+          :columns="columns"
+          @cancel="showPicker = false"
+          @confirm="onConfirm"
+        />
+      </van-popup>
     </div>
   </div>
 </template>
 
 <script>
+  import { SUCC_CODE } from 'api/config.js';
+
   export default {
     name: 'Choice',
     data() {
-      return {};
+      return {
+        showPicker: false,
+        columns: [],
+        columns1: [],
+        area: '请选择意向区域',
+        metro: '请选择地铁口',
+        price: '请选择价格区间',
+        areaList: [],
+        index: ''
+      // index: ''
+      // areaName: []
+      };
+    },
+    mounted() {
+      this.getArea();
     },
     methods: {
-      selectArea() {}
+      onConfirm(area) {
+        if (this.index === 1) {
+          this.area = area;
+        }
+        if (this.index === 2) {
+          this.metro = area[1];
+        }
+        this.showPicker = false;
+      },
+      // 获取数据
+      async getArea() {
+        const res = await this.$http.get('api/areaMetro/list');
+        if (res.code !== SUCC_CODE) return this.$toast.fail('请求失败');
+        console.log(res);
+        res.msg.forEach(item => {
+          this.columns.push(item.areaName);
+        });
+        this.areaList = res.msg;
+      },
+      // 选择
+      showPic(index) {
+        this.showPicker = true;
+
+        this.index = index;
+        if (index === 2) {
+          if (this.area === '请选择意向区域') {
+            return this.$toast.fail('请先选择区域');
+          }
+          const { listMetro: findMetro } = this.areaList.find(item => {
+            return item.areaName === this.area;
+          });
+          // console.log(findMetro);
+          findMetro.forEach(item => {
+            const metroLine = {};
+            metroLine.text = item.metroName;
+            const { stationName: station } = item;
+            const children = [];
+            station.forEach(item1 => {
+              const { subwayStation: subway } = item1;
+              const subway1 = {};
+              subway1.text = subway;
+              console.log(subway1);
+              // console.log(subway);
+              children.push(subway1);
+            });
+            // console.log(children);
+            metroLine.children = children;
+            console.log(metroLine);
+            this.columns1.push(metroLine);
+            // console.log(station);
+            console.log(this.columns1);
+            this.columns = [];
+            this.columns = this.columns1;
+          });
+        }
+      }
     }
   };
 </script>
@@ -172,6 +252,9 @@
       &:active {
         opacity: 0.9;
       }
+    }
+    .black {
+      color: black;
     }
   }
 }
