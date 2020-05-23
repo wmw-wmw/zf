@@ -2,12 +2,12 @@ import Mock from 'mockjs';
 Mock.mock(RegExp('api/userAll/listUserGwAll' + '.*'), 'get', () => {
     return {
         'code': 0,
-        adviserList
+        msg
     };
 }
 );
-const { adviserList } = Mock.mock({
-    'adviserList|30': [
+const { msg } = Mock.mock({
+    'msg|50': [
         {
             'gwName': '@cname()',
             'userId': '@increment()',
@@ -24,10 +24,12 @@ const { adviserList } = Mock.mock({
 
             ],
             'wechatImg|1': [
-                'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=128258141,197802364&fm=26&gp=0.jpg'
+                'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=128258141,197802364&fm=26&gp=0.jpg',
+                'http://img4.imgtn.bdimg.com/it/u=3152799073,1957338853&fm=26&gp=0.jpg',
+                'http://img4.imgtn.bdimg.com/it/u=1694668002,850725844&fm=26&gp=0.jpg'
             ],
-            'wechatUsername': 15937453651
+            'wechatUsername|1': [15937453651, 15964152365, 14789548754, 12145636521, 45874123654]
         }
     ]
 });
-// console.log(adviserList);
+// console.log(msg);

@@ -28,7 +28,7 @@
             >补{{item.subsidyMoney}}/分{{item.installment}}期</van-tag>
             <!-- <van-tag class="adviser-subsidy">补300/分3期</van-tag> -->
           </div>
-          <div class="adviser-weixin" @click="seeAdviser(index)" :ref="`seeAdviser${index}`">
+          <div class="adviser-weixin" @click="seeAdviser(index,item)" :ref="`seeAdviser${index}`">
             <span class="weixin icon-weixin"></span>
             <span>联系</span>
           </div>
@@ -36,10 +36,17 @@
       </div>
     </scroll>
     <div class="home-bottom">
-      <router-link to="/select" v-if="adviserList">
+      <router-link to="/select">
         <van-button class="button" type="primary" block color="#ac63fb" round>重填信息</van-button>
       </router-link>
     </div>
+    <!-- 弹出遮罩层 -->
+    <van-overlay :show="show" @click="show = false">
+      <div class="showOverlay">
+        <img :src="imgSrc" class="block" />
+        <span class="weixin-phone">微信号 {{weixinPhone}}</span>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -54,9 +61,11 @@
     data() {
       return {
         area: this.$route.query.area, // select页传过来的参数
-        userId: '',
         adviserList: [], // 顾问列表
-        guarantee: 100 // 保证金变量
+        guarantee: 100, // 保证金变量
+        show: false, // 弹出遮罩层
+        imgSrc: '', // 微信二维码路径
+        weixinPhone: '' // 微信手机号
       };
     },
     mounted() {
@@ -64,24 +73,25 @@
     },
     methods: {
       async getAdviser() {
-        // 不登录就不显示租赁顾问
-        if (localStorage.getItem('userInf')) {
-          this.userId = JSON.parse(localStorage.getItem('userInf')).userId;
-        } else {
-          return this.$toast.fail('请先登录');
-        }
         const res = await this.$http.get('api/userAll/listUserGwAll', {
-          params: { areaParam: this.area, zhId: this.userId }
+          params: { areaParam: this.area }
         });
-        console.log(res);
-        // this.adviserList = res.msg;
-        this.adviserList = res.adviserList;
+        // console.log(res);
+        this.adviserList = res.msg;
         console.log(this.adviserList);
       },
       // 查看顾问
-      seeAdviser(index) {
+      seeAdviser(index, item) {
+        // 不登录就不显示租赁顾问联系方式
+        if (!localStorage.getItem('userInf')) return this.$toast.fail('请先登录');
         // 点击改变联系颜色
         this.$refs[`seeAdviser${index}`][0].style.color = 'black';
+        this.imgSrc = item.wechatImg;
+        // console.log(this.imgSrc);
+        this.weixinPhone = item.wechatUsername;
+        // console.log(this.weixinPhone);
+
+        this.show = true;
       },
       // 跳转用户信息页
       getuser() {
@@ -194,7 +204,6 @@
       .adviser-subsidy {
         background-color: $colorA;
         height: 0.35rem;
-        line-height: 0.4rem;
         color: #ffffff;
         font-size: 0.2rem;
         padding: 0 0.08rem;
@@ -235,6 +244,28 @@
       width: 6.06rem;
       font-size: 0.3rem;
     }
+  }
+}
+// 弹出遮罩层
+.showOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  .block {
+    width: 5rem;
+    height: 5rem;
+  }
+  .weixin-phone {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0.75rem;
+    width: 6rem;
+    height: 0.9rem;
+    background-color: #fff;
+    line-height: 0.9rem;
+    text-align: center;
+    border-radius: 10px;
   }
 }
 </style>
