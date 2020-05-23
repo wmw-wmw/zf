@@ -24,9 +24,9 @@
             <div class="adviser-name">{{item.gwName}}</div>
             <van-tag
               class="adviser-subsidy"
-              v-if="item.subsidyMoney"
+              v-if="item.guaranteeMoney===guarantee"
             >补{{item.subsidyMoney}}/分{{item.installment}}期</van-tag>
-            <van-tag class="adviser-subsidy">补300/分3期</van-tag>
+            <!-- <van-tag class="adviser-subsidy">补300/分3期</van-tag> -->
           </div>
           <div class="adviser-weixin" @click="seeAdviser(index)" :ref="`seeAdviser${index}`">
             <span class="weixin icon-weixin"></span>
@@ -55,7 +55,8 @@
       return {
         area: this.$route.query.area, // select页传过来的参数
         userId: '',
-        adviserList: [] // 顾问列表
+        adviserList: [], // 顾问列表
+        guarantee: 100 // 保证金变量
       };
     },
     mounted() {
@@ -72,8 +73,9 @@
         const res = await this.$http.get('api/userAll/listUserGwAll', {
           params: { areaParam: this.area, zhId: this.userId }
         });
-        // console.log(res);
-        this.adviserList = res.msg;
+        console.log(res);
+        // this.adviserList = res.msg;
+        this.adviserList = res.adviserList;
         console.log(this.adviserList);
       },
       // 查看顾问
@@ -98,17 +100,15 @@
 <style lang="scss" scoped>
 @import "~assets/scss/variables";
 
-// .wrapper {
-//   width: 7.2rem;
-//   margin: 0 auto;
-//   position: absolute;
-//   top: 0;
-//   bottom: 52px;
-//   left: 0;
-//   right: 0;
-//   height: 3rem;
-//   overflow: hidden;
-// }
+.wrapper {
+  // width: 100%;
+  position: absolute;
+  top: 2.48rem;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
 .home {
   width: 100%;
   height: 100%;
@@ -164,6 +164,11 @@
     }
   }
   // 顾问区
+  .adviser {
+    padding-top: 0.01rem;
+    padding-bottom: 0.3rem;
+  }
+
   .adviser-list {
     display: flex;
     justify-content: space-between;
@@ -223,9 +228,10 @@
     bottom: 0;
     width: 100%;
     height: 1.5rem;
-    margin-top: 0.5rem;
+    background-color: #fff;
     .button {
       margin: 0 auto;
+      margin-top: 0.3rem;
       width: 6.06rem;
       font-size: 0.3rem;
     }

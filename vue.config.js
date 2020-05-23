@@ -11,7 +11,8 @@ module.exports = {
             .set('assets', resolve('src/assets'))
             .set('base', resolve('src/base'))
             .set('components', resolve('src/components'))
-            .set('pages', resolve('src/pages'));
+            .set('pages', resolve('src/pages'))
+            .set('mock', resolve('src/mock'));
         // 格式.set('', resolve(''))
     }
 };
