@@ -13,6 +13,7 @@
       <div class="describe">根据选择，为您匹配</div>
     </div>
     <!-- 顾问区 -->
+    <van-empty description="此地区无租赁顾问" v-if="!adviserList.length" />
     <scroll :data="adviserList" class="wrapper">
       <div class="adviser">
         <!-- 滑动 -->

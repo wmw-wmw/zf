@@ -1,5 +1,7 @@
 <template>
-  <div>00222222222222222222222222</div>
+  <div class="user">
+    <div class="header"></div>
+  </div>
 </template>
 
 <script>
@@ -12,5 +14,11 @@
 </script>
 
 <style lang="scss" scoped>
-
+.user {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background: url("./img/user-bc.png") no-repeat top;
+  background-size: contain;
+}
 </style>
