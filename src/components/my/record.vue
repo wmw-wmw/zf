@@ -29,7 +29,7 @@
               @click="seeAdviser(index,item)"
               :ref="`seeAdviser${index}`"
             ></span>
-            <router-link tag="span" to="/report">举报</router-link>
+            <router-link tag="span" :to="{path: '/report',query: {userId:item.userId}}">举报</router-link>
           </div>
         </div>
       </div>
