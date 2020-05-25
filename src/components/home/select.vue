@@ -152,11 +152,12 @@
         if (this.area === '请选择意向区域' && this.metro === '请选择地铁口') {
           return this.$toast.fail('您有未选项');
         }
+        this.$store.commit('changeArea', this.area);
         this.$router.push({
-          path: '/home',
-          query: {
-            area: this.area
-          }
+          path: '/home'
+        // query: {
+        //   area: this.area
+        // }
         });
       }
     }

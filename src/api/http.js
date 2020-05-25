@@ -42,6 +42,7 @@ axios.interceptors.request.use(config => {
         // config.data = qs.parse(config.data);
     } else {
         config.data = qs.stringify(config.data);
+        // console.log(config);
     }
 
     // 携带上token

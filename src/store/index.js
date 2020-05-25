@@ -5,8 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    area: ''
   },
   mutations: {
+    changeArea(state, area) {
+      state.area = area;
+    }
   },
   actions: {
   },

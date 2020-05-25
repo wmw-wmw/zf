@@ -36,10 +36,23 @@ const routes = [
     path: '/home',
     component: () => import('components/home/home')
   },
+  // 用户
   {
     name: 'user',
     path: '/user',
     component: () => import('components/my')
+  },
+  // 咨询记录
+  {
+    name: 'record',
+    path: '/record',
+    component: () => import('components/my/record')
+  },
+  // 举报
+  {
+    name: 'report',
+    path: '/report',
+    component: () => import('components/my/report')
   }
 ];
 

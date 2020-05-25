@@ -6,7 +6,7 @@ import store from './store';
 import './plugins/vant.js';
 import './api/http.js';
 // mock数据
-import './mock';
+// import './mock';
 
 import 'assets/js/rem.js';
 import 'assets/scss/index.scss';
