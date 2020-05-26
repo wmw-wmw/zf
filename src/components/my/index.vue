@@ -16,22 +16,26 @@
           <span class="gointo icon-jinru"></span>
         </div>
       </router-link>
-      <div class="consultation">
-        <span class="zixun icon-weixin"></span>
-        <span class="span-flex">绑定微信</span>
-        <span class="gointo icon-jinru"></span>
-      </div>
+      <router-link tag="div" to="/bindWechat">
+        <div class="consultation">
+          <span class="zixun icon-weixin"></span>
+          <span class="span-flex">绑定微信</span>
+          <span class="gointo icon-jinru"></span>
+        </div>
+      </router-link>
     </div>
     <div class="adviser">
       <span class="icon1"></span>
       <span class="span-flex">申请成为租赁顾问</span>
       <span class="gointo icon-jinru"></span>
     </div>
-    <div class="adviser set">
-      <span class="zixun icon-shezhi"></span>
-      <span class="span-flex">账号密码</span>
-      <span class="gointo icon-jinru"></span>
-    </div>
+    <router-link tag="div" to="/setUp">
+      <div class="adviser set">
+        <span class="zixun icon-shezhi"></span>
+        <span class="span-flex">账号密码</span>
+        <span class="gointo icon-jinru"></span>
+      </div>
+    </router-link>
   </div>
 </template>
 

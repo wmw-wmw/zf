@@ -53,6 +53,18 @@ const routes = [
     name: 'report',
     path: '/report',
     component: () => import('components/my/report')
+  },
+  // 绑定微信
+  {
+    name: 'bindWechat',
+    path: '/bindWechat',
+    component: () => import('components/my/bindWechat')
+  },
+  // 设置
+  {
+    name: 'setUp',
+    path: '/setUp',
+    component: () => import('components/my/setUp')
   }
 ];
 
