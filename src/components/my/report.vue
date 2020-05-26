@@ -26,7 +26,7 @@
         <van-uploader
           v-model="fileList"
           :max-count="3"
-          :max-size="8 * 1024 * 1024"
+          :max-size="5 * 1024 * 1024"
           :after-read="afterRead"
           @oversize="onOversize"
         />
@@ -60,15 +60,24 @@
       },
       // 图片上传
       async afterRead(file) {
+        file.status = 'uploading';
+        file.message = '上传中...';
         // console.log(file);
         const res = await this.$http.post('oss/uploadBase64', {
           file: file.content
         });
+        // 上传状态
+        if (res.code === SUCC_CODE) {
+          file.status = 'done';
+        } else {
+          file.status = 'failed';
+          file.message = '上传失败';
+        }
         this.imgList.push(res.imgUrl);
       // console.log(this.imgList);
       },
       onOversize(file) {
-        this.$toast.fail('图片大小不能超过8M');
+        this.$toast.fail('图片大小不能超过5M');
       },
       async report() {
         if (

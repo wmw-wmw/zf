@@ -1,6 +1,7 @@
 import Vue from 'vue';
-import { Toast, Checkbox, Picker, Popup, Tag, Button, Overlay, Empty, Cell, Uploader, Field } from 'vant';
+import { Toast, Checkbox, Picker, Popup, Tag, Button, Overlay, Empty, Cell, Uploader, Field, CellGroup } from 'vant';
 
+Vue.use(CellGroup);
 Vue.use(Toast);
 Vue.use(Checkbox);
 Vue.use(Popup);

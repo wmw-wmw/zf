@@ -24,11 +24,13 @@
         </div>
       </router-link>
     </div>
-    <div class="adviser">
-      <span class="icon1"></span>
-      <span class="span-flex">申请成为租赁顾问</span>
-      <span class="gointo icon-jinru"></span>
-    </div>
+    <router-link tag="div" to="/applyAdviser">
+      <div class="adviser">
+        <span class="icon1"></span>
+        <span class="span-flex">申请成为租赁顾问</span>
+        <span class="gointo icon-jinru"></span>
+      </div>
+    </router-link>
     <router-link tag="div" to="/setUp">
       <div class="adviser set">
         <span class="zixun icon-shezhi"></span>

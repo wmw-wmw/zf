@@ -65,6 +65,18 @@ const routes = [
     name: 'setUp',
     path: '/setUp',
     component: () => import('components/my/setUp')
+  },
+  // 申请成为租赁顾问
+  {
+    name: 'applyAdviser',
+    path: '/applyAdviser',
+    component: () => import('components/my/apply/applyAdviser')
+  },
+  // 申请租赁顾问手机验证
+  {
+    name: 'phoneText',
+    path: '/phoneText',
+    component: () => import('components/my/apply/phoneText')
   }
 ];
 
