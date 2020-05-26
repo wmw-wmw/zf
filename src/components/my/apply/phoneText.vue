@@ -1,7 +1,7 @@
 <template>
   <div class="bindWechat">
     <!-- 头部区 -->
-    <router-link class="phone-icon icon-btn_return" tag="span" to="/user"></router-link>
+    <router-link class="phone-icon icon-btn_return" tag="span" to="/applyAdviser"></router-link>
     <div class="header">
       <span>手机号验证</span>
     </div>
@@ -54,8 +54,8 @@
         // console.log(res);
         if (res.code !== SUCC_CODE) return this.$toast.fail('手机号验证失败');
         this.$toast.success('手机号验证成功');
-        // 1. 通过编程式导航跳转到手机号验证页，路由地址是 /phoneText
-        this.$router.push('/phoneText');
+        // 1. 通过编程式导航跳转到完成页，路由地址是 /applyAdviserFinish
+        this.$router.push('/applyAdviserFinish');
       }
     }
   };

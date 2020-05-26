@@ -77,6 +77,12 @@ const routes = [
     name: 'phoneText',
     path: '/phoneText',
     component: () => import('components/my/apply/phoneText')
+  },
+  // 申请租赁顾问完成
+  {
+    name: 'applyAdviserFinish',
+    path: '/applyAdviserFinish',
+    component: () => import('components/my/apply/applyAdviserFinish')
   }
 ];
 
