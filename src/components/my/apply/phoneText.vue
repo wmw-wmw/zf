@@ -51,11 +51,13 @@
           mobile: this.tel,
           codeNum: this.verificationcode
         });
-        // console.log(res);
+        console.log(res);
         if (res.code !== SUCC_CODE) return this.$toast.fail('手机号验证失败');
         this.$toast.success('手机号验证成功');
         // 1. 通过编程式导航跳转到完成页，路由地址是 /applyAdviserFinish
-        this.$router.push('/applyAdviserFinish');
+        setTimeout(() => {
+          this.$router.push('/applyAdviserFinish');
+        }, 2000);
       }
     }
   };

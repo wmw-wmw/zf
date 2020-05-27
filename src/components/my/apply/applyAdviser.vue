@@ -111,7 +111,9 @@
         if (res.code !== SUCC_CODE) return this.$toast.fail('提交失败');
         this.$toast.success('提交成功');
         // 1. 通过编程式导航跳转到手机号验证页，路由地址是 /phoneText
-        this.$router.push('/phoneText');
+        setTimeout(() => {
+          this.$router.push('/phoneText');
+        }, 2000);
       }
     }
   };

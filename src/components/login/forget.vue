@@ -184,7 +184,9 @@
         if (res.code !== SUCC_CODE) return this.$toast.fail('修改失败');
         this.$toast.success('修改成功');
         // 1. 通过编程式导航跳转到登录页，路由地址 /login
-        this.$router.push('/login');
+        setTimeout(() => {
+          this.$router.push('/login');
+        }, 2000);
       },
       changeInput() {
         this.showMessage = false;

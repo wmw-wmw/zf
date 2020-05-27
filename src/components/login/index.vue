@@ -132,7 +132,9 @@
         console.log(res1);
         localStorage.setItem('userInf', JSON.stringify(res1.user));
         // 2. 通过编程式导航跳转到主页，路由地址是 /select
-        this.$router.push('/select');
+        setTimeout(() => {
+          this.$router.push('/select');
+        }, 2000);
       },
       changeInput() {
         this.showMessage = false;

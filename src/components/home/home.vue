@@ -25,7 +25,7 @@
             <div class="adviser-name">{{item.gwName}}</div>
             <van-tag
               class="adviser-subsidy"
-              v-if="item.guaranteeMoney===guarantee"
+              v-if="item.guaranteeMoney==guarantee"
             >补{{item.subsidyMoney}}/分{{item.installment}}期</van-tag>
             <!-- <van-tag class="adviser-subsidy">补300/分3期</van-tag> -->
           </div>

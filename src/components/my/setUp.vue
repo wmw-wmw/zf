@@ -51,7 +51,9 @@
         if (res.code !== SUCC_CODE) return this.$toast.fail('修改失败');
         this.$toast.success('修改成功');
         // 1. 通过编程式导航跳转到用户页，路由地址 /user
-        this.$router.push('/user');
+        setTimeout(() => {
+          this.$router.push('/user');
+        }, 2000);
       }
     }
   };
